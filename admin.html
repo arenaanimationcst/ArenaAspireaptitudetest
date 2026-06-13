@@ -372,7 +372,7 @@ function renderStats(records){
   const total = records.length;
   const completed = records.filter(r=>r.used).length;
   const pending = total - completed;
-  const totalScholarship = records.filter(r=>r.used && r.result).reduce((s,r)=>s+(r.result.schAmount||0),0);
+  const totalScholarship = records.filter(r=>r.used && r.result && r.result.passed).reduce((s,r)=>s+(r.result.schAmount||0),0);
   const avgPct = completed > 0 ? (records.filter(r=>r.used && r.result).reduce((s,r)=>s+(parseFloat(r.result.pct)||0),0) / completed).toFixed(1) : '—';
  
   document.getElementById('statPills').innerHTML = `
@@ -411,8 +411,8 @@ function renderTable(records){
       <td>${r.used ? '<span class="status-used">✓ Completed</span>' : '<span class="status-pending">⏳ Pending</span>'}</td>
       <td>${r.used ? `${res.score} / ${res.total}` : '—'}</td>
       <td>${r.used ? res.pct+'%' : '—'}</td>
-      <td>${r.used ? '₹'+(res.schAmount||0).toLocaleString('en-IN') : '—'}</td>
-      <td>${r.used ? (res.schName||'—') : '—'}</td>
+      <td>${r.used ? (res.passed ? '₹'+(res.schAmount||0).toLocaleString('en-IN') : '—') : '—'}</td>
+      <td>${r.used ? (res.passed ? '<span class="status-used">PASS</span>' : '<span style="color:#EF9A9A;font-weight:700">FAIL</span>') : '—'}</td>
       <td>${r.used ? (res.email||'—') : '—'}</td>
       <td>${r.used ? (res.program||'—') : '—'}</td>
     </tr>`;
