@@ -795,8 +795,8 @@ let studentData = {};
 let verifiedRecord = null; // {code,name,mobile,coursecat,...} from JSONBin
 
 /* ============ JSONBIN CONFIG ============ */
-const JSONBIN_BIN_ID = "6a2d2832da38895dfeb988be";
-const JSONBIN_API_KEY = "$2a$10$P7VEzBc.j5zUfCUNbw/X5e10mHmBgEXLeOF8ONana6GfCMdt2VMTi";
+const JSONBIN_BIN_ID = "YOUR_JSONBIN_BIN_ID";
+const JSONBIN_API_KEY = "YOUR_JSONBIN_API_KEY";
 const JSONBIN_BASE = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 async function jsonbinGet(){
@@ -1019,26 +1019,27 @@ function finishTest(autoSubmit){
   const timeUsed = TOTAL_TIME - timeLeft;
   const tm = Math.floor(timeUsed/60), ts = timeUsed%60;
 
-  // Scholarship tiers based on percentage AND course category
+  // Pass/Fail at 50% — flat scholarship amount per course category on pass
   const pct = (score/TOTAL_MARKS)*100;
-  const TIER_TABLE = {
-    career:    [30000, 24000, 18000, 12000, 5000],
-    shortterm: [20000, 16000, 12000, 8000, 3000],
-    standalone:[10000, 8000, 6000, 4000, 2000]
-  };
-  const TIER_NAMES = ["Merit Scholarship","High Achiever Award","Creative Talent Award","Excellence Award","Participation Award"];
-  const tiers = TIER_TABLE[studentData.coursecat] || TIER_TABLE.career;
-
-  let schAmount, schName, verdict, icon, message;
-  if(pct >= 80){ schAmount=tiers[0]; schName=TIER_NAMES[0]; verdict="Outstanding! Congratulations!"; icon="🏆"; }
-  else if(pct >= 65){ schAmount=tiers[1]; schName=TIER_NAMES[1]; verdict="Excellent Work! Congratulations!"; icon="🎉"; }
-  else if(pct >= 50){ schAmount=tiers[2]; schName=TIER_NAMES[2]; verdict="Great Job! Congratulations!"; icon="🌟"; }
-  else if(pct >= 35){ schAmount=tiers[3]; schName=TIER_NAMES[3]; verdict="Well Done! You've Qualified!"; icon="✨"; }
-  else { schAmount=tiers[4]; schName=TIER_NAMES[4]; verdict="Thanks for Participating!"; icon="🎬"; }
-
+  const PASS_AMOUNT = { career: 30000, shortterm: 20000, standalone: 10000 };
   const courseLabel = {career:"Career Program",shortterm:"Short Term Course",standalone:"Stand Alone Course"}[studentData.coursecat] || "Program";
 
-  message = `Dear <strong>${studentData.name}</strong>, based on your performance in the ARENAASPIRE Aptitude Test, you have been awarded the <strong>${schName}</strong> of <strong>₹${schAmount.toLocaleString('en-IN')}</strong> towards your chosen ${courseLabel} (${studentData.program}) at Arena Animation CST. This offer is valid for the next <strong>24 hours</strong> — visit our Fort, Mumbai centre with this result to redeem your scholarship and book your seat.`;
+  const passed = pct >= 50;
+  let schAmount, schName, verdict, icon, message;
+
+  if(passed){
+    schAmount = PASS_AMOUNT[studentData.coursecat] || PASS_AMOUNT.career;
+    schName = "Scholarship Qualified";
+    verdict = "Congratulations!";
+    icon = "🏆";
+    message = `Dear <strong>${studentData.name}</strong>, congratulations! Based on your performance in the ARENAASPIRE Aptitude Test, you have <strong>PASSED</strong> and are awarded a scholarship of <strong>₹${schAmount.toLocaleString('en-IN')}</strong> towards your chosen ${courseLabel} (${studentData.program}) at Arena Animation CST. This offer is valid for the next <strong>24 hours</strong> — visit our Fort, Mumbai centre with this result to redeem your scholarship and book your seat.<br><br>Warm regards,<br><strong>Team Arena Animation CST</strong>`;
+  } else {
+    schAmount = 0;
+    schName = "Not Qualified";
+    verdict = "Result: Not Qualified";
+    icon = "📋";
+    message = `Dear <strong>${studentData.name}</strong>, thank you for taking the ARENAASPIRE Aptitude Test. Unfortunately, your score did not meet the qualifying threshold (50%) for the scholarship this time. We regret to inform you that no scholarship has been awarded on this attempt.<br><br>We encourage you to visit Arena Animation CST, Fort, Mumbai to discuss your options with our counseling team — there may be other ways we can support your creative journey.<br><br>Warm regards,<br><strong>Team Arena Animation CST</strong>`;
+  }
 
   // Populate result screen
   document.getElementById('resultIcon').textContent = icon;
@@ -1048,22 +1049,34 @@ function finishTest(autoSubmit){
   document.getElementById('bdCorrect').textContent = correctCount;
   document.getElementById('bdWrong').textContent = wrongCount + (QUESTIONS.length - correctCount - wrongCount);
   document.getElementById('bdTime').textContent = `${tm}:${ts.toString().padStart(2,'0')}`;
-  document.getElementById('schAmount').textContent = `₹${schAmount.toLocaleString('en-IN')}`;
+  document.getElementById('schAmount').textContent = passed ? `₹${schAmount.toLocaleString('en-IN')}` : '—';
   document.getElementById('schName').textContent = schName;
   document.getElementById('resultMessage').innerHTML = message;
 
   const validUntil = new Date(Date.now() + 24*60*60*1000);
-  document.getElementById('schValid').textContent = `This offer is valid until ${validUntil.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})} (24 hours from now).`;
+  document.getElementById('schValid').textContent = passed
+    ? `This offer is valid until ${validUntil.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})} (24 hours from now).`
+    : `This result was recorded on ${new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}.`;
+
+  // Style the scholarship banner differently for fail
+  const banner = document.querySelector('.scholarship-banner');
+  if(passed){
+    banner.style.background = 'linear-gradient(135deg, rgba(225,37,27,.22), rgba(255,212,0,.12))';
+    banner.style.borderColor = 'var(--yellow)';
+  } else {
+    banner.style.background = 'rgba(255,255,255,.03)';
+    banner.style.borderColor = 'rgba(255,255,255,.15)';
+  }
 
   goToScreen('screen-result');
 
-  // Celebration for qualifying scores
-  if(pct >= 35){
+  // Celebration only on pass
+  if(passed){
     triggerCelebration();
   }
 
   // Save to JSONBin + send email
-  saveResultToJsonBin({...studentData, score, total:TOTAL_MARKS, pct:pct.toFixed(1), correctCount, wrongCount, schAmount, schName, timeUsed:`${tm}:${ts}`, autoSubmit, timestamp:new Date().toISOString()});
+  saveResultToJsonBin({...studentData, score, total:TOTAL_MARKS, pct:pct.toFixed(1), correctCount, wrongCount, schAmount, schName, passed, timeUsed:`${tm}:${ts}`, autoSubmit, timestamp:new Date().toISOString()});
   sendResultEmail({...studentData, score, total:TOTAL_MARKS, schAmount, schName, message});
 }
 
@@ -1123,7 +1136,7 @@ async function saveResultToJsonBin(record){
     const resultEntry = {
       score: record.score, total: record.total, pct: record.pct,
       correctCount: record.correctCount, wrongCount: record.wrongCount,
-      schAmount: record.schAmount, schName: record.schName,
+      schAmount: record.schAmount, schName: record.schName, passed: record.passed,
       timeUsed: record.timeUsed, autoSubmit: record.autoSubmit,
       timestamp: record.timestamp,
       email: record.email, stream: record.stream, program: record.program
