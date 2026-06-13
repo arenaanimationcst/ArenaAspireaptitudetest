@@ -21,41 +21,41 @@ body{font-family:var(--font-body);background:var(--charcoal);color:var(--cream);
 .topbar h1{font-family:var(--font-display);font-weight:300;font-size:1.5rem}
 .topbar h1 em{font-style:italic;color:var(--yellow)}
 .topbar .sub{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--yellow);margin-top:.2rem}
-
+ 
 .tabs{display:flex;gap:.5rem;margin-bottom:1.5rem}
 .tab{padding:.7rem 1.4rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,212,0,.15);cursor:pointer;font-size:.85rem;font-weight:600;letter-spacing:.04em}
 .tab.active{background:linear-gradient(135deg,var(--yellow),var(--yellow-dark));color:var(--charcoal);border-color:var(--yellow)}
 .tabcontent{display:none}
 .tabcontent.active{display:block}
-
+ 
 .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,212,0,.18);padding:2rem;margin-bottom:1.5rem}
 .card h2{font-family:var(--font-display);font-weight:300;font-size:1.5rem;margin-bottom:1.2rem}
 .card h2 em{font-style:italic;color:var(--yellow)}
-
+ 
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .form-group{margin-bottom:1.2rem}
 label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--yellow-dark);margin-bottom:.4rem}
 input,select{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,212,0,.25);color:var(--cream);font-family:var(--font-body);font-size:.92rem;padding:.8rem 1rem;outline:none}
 input:focus,select:focus{border-color:var(--yellow)}
 select option{background:var(--charcoal)}
-
+ 
 .btn{display:inline-block;background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;font-weight:700;font-size:.9rem;padding:.85rem 1.8rem;border:none;cursor:pointer;letter-spacing:.04em;text-transform:uppercase}
 .btn.yellow{background:linear-gradient(135deg,var(--yellow),var(--yellow-dark));color:var(--charcoal)}
 .btn:hover{opacity:.9}
 .btn:disabled{opacity:.4;cursor:not-allowed}
-
+ 
 .generated-box{margin-top:1.5rem;background:rgba(255,212,0,.08);border:1px solid var(--yellow);padding:1.5rem;display:none}
 .generated-box .code{font-family:var(--font-display);font-size:2.5rem;font-weight:700;color:var(--yellow);letter-spacing:.2em;text-align:center;margin-bottom:.5rem}
 .generated-box .details{font-size:.85rem;color:var(--text-muted);text-align:center;line-height:1.6}
 .copy-row{display:flex;gap:.6rem;margin-top:1rem;justify-content:center}
-
+ 
 /* FILTERS */
 .filter-row{display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:1.2rem}
 .filter-row .form-group{margin-bottom:0;min-width:160px}
 .stat-pills{display:flex;gap:1rem;margin-bottom:1.2rem;flex-wrap:wrap}
 .pill{background:rgba(255,255,255,.04);border:1px solid rgba(255,212,0,.15);padding:.7rem 1.2rem;font-size:.8rem}
 .pill b{color:var(--yellow);font-family:var(--font-display);font-size:1.2rem;display:block}
-
+ 
 /* TABLE */
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.83rem}
@@ -70,24 +70,24 @@ tr:hover td{background:rgba(255,212,0,.04)}
 </style>
 </head>
 <body>
-
+ 
 <div class="topbar">
   <div>
     <h1>ARENA<em>ASPIRE</em> Admin Panel</h1>
     <div class="sub">National Arena Scholarship Panel · Arena Animation CST</div>
   </div>
 </div>
-
+ 
 <div class="container">
   <div class="config-warning" id="configWarning">
-    ⚠️ JSONBin credentials are not configured yet. Replace <code>6a2d2832da38895dfeb988be</code> and <code>$2a$10$P7VEzBc.j5zUfCUNbw/X5e10mHmBgEXLeOF8ONana6GfCMdt2VMTi</code> in this file's script section with your actual JSONBin.io Bin ID and Secret Key.
+    ⚠️ JSONBin credentials are not configured yet.
   </div>
-
+ 
   <div class="tabs">
     <div class="tab active" onclick="switchTab('generate')">Generate Code</div>
     <div class="tab" onclick="switchTab('dashboard')">Results Dashboard</div>
   </div>
-
+ 
   <!-- GENERATE CODE TAB -->
   <div class="tabcontent active" id="tab-generate">
     <div class="card">
@@ -113,7 +113,7 @@ tr:hover td{background:rgba(255,212,0,.04)}
       </div>
       <div id="gen-error" style="color:#EF9A9A;font-size:.82rem;margin-bottom:1rem;display:none"></div>
       <button class="btn" id="genBtn" onclick="generateCode()">Generate Unique Code</button>
-
+ 
       <div class="generated-box" id="generatedBox">
         <div class="code" id="genCodeDisplay">------</div>
         <div class="details" id="genDetailsDisplay"></div>
@@ -124,7 +124,7 @@ tr:hover td{background:rgba(255,212,0,.04)}
       </div>
     </div>
   </div>
-
+ 
   <!-- DASHBOARD TAB -->
   <div class="tabcontent" id="tab-dashboard">
     <div class="card">
@@ -132,7 +132,7 @@ tr:hover td{background:rgba(255,212,0,.04)}
         <h2 style="margin-bottom:0">Results <em>Dashboard</em></h2>
         <button class="btn yellow" onclick="loadDashboard()">↻ Refresh</button>
       </div>
-
+ 
       <div class="filter-row">
         <div class="form-group">
           <label>From Date</label>
@@ -166,9 +166,9 @@ tr:hover td{background:rgba(255,212,0,.04)}
         <button class="btn" onclick="applyFilters()">Apply Filters</button>
         <button class="btn yellow" onclick="clearFilters()">Clear</button>
       </div>
-
+ 
       <div class="stat-pills" id="statPills"></div>
-
+ 
       <div class="table-wrap">
         <table id="resultsTable">
           <thead>
@@ -195,19 +195,19 @@ tr:hover td{background:rgba(255,212,0,.04)}
     </div>
   </div>
 </div>
-
+ 
 <script>
 /* ============ CONFIG ============ */
 const JSONBIN_BIN_ID = "6a2d2832da38895dfeb988be";
 const JSONBIN_API_KEY = "$2a$10$P7VEzBc.j5zUfCUNbw/X5e10mHmBgEXLeOF8ONana6GfCMdt2VMTi";
 const JSONBIN_BASE = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
-
-if(JSONBIN_BIN_ID === "6a2d2832da38895dfeb988be"){
+ 
+if(false){
   document.getElementById('configWarning').style.display = 'block';
 }
-
+ 
 const COURSE_LABELS = {career:"Career Program",shortterm:"Short Term Course",standalone:"Stand Alone Course"};
-
+ 
 async function jsonbinGet(){
   const res = await fetch(`${JSONBIN_BASE}/latest`,{ headers:{ 'X-Master-Key': JSONBIN_API_KEY } });
   if(!res.ok) throw new Error('JSONBin GET failed: '+res.status);
@@ -222,7 +222,7 @@ async function jsonbinPut(data){
   });
   if(!res.ok) throw new Error('JSONBin PUT failed: '+res.status);
 }
-
+ 
 /* ============ TABS ============ */
 function switchTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -231,7 +231,7 @@ function switchTab(name){
   document.getElementById(`tab-${name}`).classList.add('active');
   if(name==='dashboard') loadDashboard();
 }
-
+ 
 /* ============ CODE GENERATION ============ */
 function genRandomCode(){
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // avoid ambiguous chars
@@ -239,18 +239,18 @@ function genRandomCode(){
   for(let i=0;i<6;i++) code += chars[Math.floor(Math.random()*chars.length)];
   return code;
 }
-
+ 
 let lastGenerated = null;
-
+ 
 async function generateCode(){
   const name = document.getElementById('gen-name').value.trim();
   const mobile = document.getElementById('gen-mobile').value.trim();
   const coursecat = document.getElementById('gen-coursecat').value;
   const errEl = document.getElementById('gen-error');
   const btn = document.getElementById('genBtn');
-
+ 
   const mobileOk = /^[0-9]{10}$/.test(mobile);
-
+ 
   if(!name || !mobileOk || !coursecat){
     errEl.style.display='block';
     if(!name) errEl.textContent = "Please enter the student's name.";
@@ -261,30 +261,30 @@ async function generateCode(){
   errEl.style.display='none';
   btn.disabled = true;
   btn.textContent = "Generating…";
-
+ 
   try{
     const data = await jsonbinGet();
     data.codes = data.codes || [];
-
+ 
     // ensure unique code
     let code;
     do { code = genRandomCode(); } while(data.codes.some(r=>r.code===code));
-
+ 
     const record = {code, name, mobile, coursecat, used:false, generatedAt: new Date().toISOString()};
     data.codes.push(record);
     await jsonbinPut(data);
-
+ 
     lastGenerated = record;
     document.getElementById('genCodeDisplay').textContent = code;
     document.getElementById('genDetailsDisplay').innerHTML =
       `<strong>${name}</strong> · ${mobile}<br>${COURSE_LABELS[coursecat]} · Max scholarship: ₹${{career:'30,000',shortterm:'20,000',standalone:'10,000'}[coursecat]}`;
     document.getElementById('generatedBox').style.display = 'block';
-
+ 
     // clear form
     document.getElementById('gen-name').value='';
     document.getElementById('gen-mobile').value='';
     document.getElementById('gen-coursecat').value='';
-
+ 
   }catch(e){
     console.error(e);
     errEl.style.display='block';
@@ -293,7 +293,7 @@ async function generateCode(){
   btn.disabled=false;
   btn.textContent="Generate Unique Code";
 }
-
+ 
 function copyCode(){
   if(!lastGenerated) return;
   navigator.clipboard.writeText(lastGenerated.code);
@@ -305,10 +305,10 @@ function copyWhatsAppMsg(){
   navigator.clipboard.writeText(msg);
   alert('WhatsApp message copied to clipboard!');
 }
-
+ 
 /* ============ DASHBOARD ============ */
 let allRecords = [];
-
+ 
 async function loadDashboard(){
   const tbody = document.getElementById('resultsTbody');
   tbody.innerHTML = '<tr><td colspan="12" class="loading">Loading…</td></tr>';
@@ -321,20 +321,20 @@ async function loadDashboard(){
     tbody.innerHTML = '<tr><td colspan="12" class="loading">Failed to load. Check JSONBin configuration.</td></tr>';
   }
 }
-
+ 
 function applyFilters(){
   const from = document.getElementById('filterFrom').value;
   const to = document.getElementById('filterTo').value;
   const status = document.getElementById('filterStatus').value;
   const course = document.getElementById('filterCourse').value;
   const search = document.getElementById('filterSearch').value.trim().toLowerCase();
-
+ 
   let filtered = allRecords.filter(r=>{
     if(status === 'used' && !r.used) return false;
     if(status === 'pending' && r.used) return false;
     if(course && r.coursecat !== course) return false;
     if(search && !(r.name.toLowerCase().includes(search) || r.mobile.includes(search) || r.code.toLowerCase().includes(search))) return false;
-
+ 
     const dateStr = r.result?.timestamp || r.generatedAt;
     if(from || to){
       const d = new Date(dateStr);
@@ -343,11 +343,11 @@ function applyFilters(){
     }
     return true;
   });
-
+ 
   renderTable(filtered);
   renderStats(filtered);
 }
-
+ 
 function clearFilters(){
   document.getElementById('filterFrom').value='';
   document.getElementById('filterTo').value='';
@@ -356,14 +356,14 @@ function clearFilters(){
   document.getElementById('filterSearch').value='';
   applyFilters();
 }
-
+ 
 function renderStats(records){
   const total = records.length;
   const completed = records.filter(r=>r.used).length;
   const pending = total - completed;
   const totalScholarship = records.filter(r=>r.used && r.result).reduce((s,r)=>s+(r.result.schAmount||0),0);
   const avgPct = completed > 0 ? (records.filter(r=>r.used && r.result).reduce((s,r)=>s+(parseFloat(r.result.pct)||0),0) / completed).toFixed(1) : '—';
-
+ 
   document.getElementById('statPills').innerHTML = `
     <div class="pill"><b>${total}</b>Total Codes</div>
     <div class="pill"><b>${completed}</b>Tests Completed</div>
@@ -372,7 +372,7 @@ function renderStats(records){
     <div class="pill"><b>${avgPct}${avgPct!=='—'?'%':''}</b>Avg. Score</div>
   `;
 }
-
+ 
 function renderTable(records){
   const tbody = document.getElementById('resultsTbody');
   if(records.length === 0){
@@ -385,7 +385,7 @@ function renderTable(records){
     const db = new Date(b.result?.timestamp || b.generatedAt);
     return db - da;
   });
-
+ 
   tbody.innerHTML = records.map(r=>{
     const dateStr = r.result?.timestamp || r.generatedAt;
     const d = new Date(dateStr);
@@ -410,3 +410,4 @@ function renderTable(records){
 </script>
 </body>
 </html>
+ 
