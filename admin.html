@@ -71,6 +71,17 @@ tr:hover td{background:rgba(255,212,0,.04)}
 </head>
 <body>
  
+<div id="loginGate" style="position:fixed;inset:0;background:var(--charcoal);z-index:9999;display:flex;align-items:center;justify-content:center">
+  <div style="max-width:380px;width:90%;background:rgba(255,255,255,.04);border:1px solid rgba(255,212,0,.22);padding:2.5rem;text-align:center">
+    <div style="font-family:var(--font-display);font-size:1.8rem;margin-bottom:.3rem">ARENA<em style="color:var(--yellow);font-style:italic">ASPIRE</em></div>
+    <div style="font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--yellow);margin-bottom:1.5rem">Admin Access</div>
+    <input type="password" id="loginPw" placeholder="Enter admin password" style="margin-bottom:1rem" onkeydown="if(event.key==='Enter')checkLogin()">
+    <div id="loginErr" style="color:#EF9A9A;font-size:.8rem;margin-bottom:1rem;display:none">Incorrect password.</div>
+    <button class="btn full" onclick="checkLogin()">Enter</button>
+  </div>
+</div>
+<div id="adminContent" style="display:none">
+ 
 <div class="topbar">
   <div>
     <h1>ARENA<em>ASPIRE</em> Admin Panel</h1>
@@ -408,6 +419,24 @@ function renderTable(records){
   }).join('');
 }
 </script>
+</div>
+ 
+<script>
+const ADMIN_PASSWORD = "Arena@Faiz786";
+function checkLogin(){
+  const pw = document.getElementById('loginPw').value;
+  if(pw === ADMIN_PASSWORD){
+    document.getElementById('loginGate').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    sessionStorage.setItem('arenaAdminAuth','1');
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+if(sessionStorage.getItem('arenaAdminAuth') === '1'){
+  document.getElementById('loginGate').style.display = 'none';
+  document.getElementById('adminContent').style.display = 'block';
+}
+</script>
 </body>
 </html>
- 
