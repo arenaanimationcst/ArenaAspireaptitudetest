@@ -312,7 +312,8 @@ function copyCode(){
 }
 function copyWhatsAppMsg(){
   if(!lastGenerated) return;
-  const msg = `🎬 *ARENAASPIRE Scholarship Test*\n\nHi ${lastGenerated.name}!\n\nYour access code for the Arena Animation CST scholarship assessment is:\n\n*${lastGenerated.code}*\n\nUse this code along with your name & mobile number to start the test. Good luck! 🌟\n\n— Arena Animation CST, Fort, Mumbai`;
+  const catMax = {career:'₹30,000',shortterm:'₹20,000',standalone:'₹10,000'}[lastGenerated.coursecat] || '';
+  const msg = `🎬 *ARENAASPIRE Scholarship Test*\n\nHi ${lastGenerated.name}!\n\nYou have been registered for the Arena Animation CST Scholarship Assessment. Here are your login details:\n\n👤 *Name:* ${lastGenerated.name}\n📱 *Mobile:* ${lastGenerated.mobile}\n🔑 *Access Code:* *${lastGenerated.code}*\n\nUse these exact details to start your test. The assessment is 20 minutes long and you can win a scholarship of up to *${catMax}*.\n\n👉 Test Link: https://arenaanimationcst.github.io/ArenaAspireaptitudetest/\n\nGood luck! 🌟\n\n— Arena Animation CST, Fort, Mumbai\n📞 088288 23738`;
   navigator.clipboard.writeText(msg);
   alert('WhatsApp message copied to clipboard!');
 }
