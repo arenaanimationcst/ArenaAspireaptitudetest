@@ -1076,8 +1076,16 @@ function finishTest(autoSubmit){
   }
 
   // Save to JSONBin + send email
+  // Plain text version for email (no HTML tags)
+  let messagePlain;
+  if(passed){
+    messagePlain = `Congratulations! You have PASSED the ARENAASPIRE Aptitude Test and are awarded a scholarship of ₹${schAmount.toLocaleString('en-IN')} towards your chosen ${courseLabel} (${studentData.program}) at Arena Animation CST. This offer is valid for the next 24 hours — visit our Fort, Mumbai centre with this result to redeem your scholarship and book your seat.`;
+  } else {
+    messagePlain = `Thank you for taking the ARENAASPIRE Aptitude Test. Unfortunately, your score did not meet the qualifying threshold (50%) for the scholarship this time. We regret to inform you that no scholarship has been awarded on this attempt. We encourage you to visit Arena Animation CST, Fort, Mumbai to discuss your options with our counseling team — there may be other ways we can support your creative journey.`;
+  }
+
   saveResultToJsonBin({...studentData, score, total:TOTAL_MARKS, pct:pct.toFixed(1), correctCount, wrongCount, schAmount, schName, passed, timeUsed:`${tm}:${ts}`, autoSubmit, timestamp:new Date().toISOString()});
-  sendResultEmail({...studentData, score, total:TOTAL_MARKS, schAmount, schName, message});
+  sendResultEmail({...studentData, score, total:TOTAL_MARKS, schAmount, schName, passed, message:messagePlain});
 }
 
 /* ============ CELEBRATION + CONFETTI ============ */
